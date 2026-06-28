@@ -8,3 +8,6 @@ reports/.DS_Store
 
 # Private — your real portfolios/holdings never get committed
 reports/private/
+
+# Daily run logs may contain holdings/analysis — keep local
+logs/*.log

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compound — Demo Dashboard (fictional data)</title>
+<style>
+  :root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--mut:#9aa3b2;
+    --green:#3fb950;--amber:#d29922;--red:#f85149;--blue:#58a6ff;--gray:#6e7681;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+  h1{font-size:24px;margin:0 0 2px}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:30px 0 12px;font-weight:600}
+  .sub{color:var(--mut);font-size:14px}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  .demo{background:#2a2310;border:1px solid #4a3d12;color:var(--amber);border-radius:10px;padding:10px 14px;margin:14px 0 0;font-size:13px;font-weight:600}
+  .tabs{display:flex;gap:6px;margin:18px 0 4px;border-bottom:1px solid var(--line)}
+  .tabbtn{background:none;border:none;color:var(--mut);font:inherit;font-weight:600;padding:9px 14px;cursor:pointer;border-bottom:2px solid transparent}
+  .tabbtn.on{color:var(--txt);border-bottom-color:var(--blue)}
+  .tab{display:none} .tab.on{display:block}
+  .grid{display:grid;gap:14px} .cards{grid-template-columns:1fr 1fr}
+  @media(max-width:680px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi{display:flex;gap:26px;flex-wrap:wrap}
+  .kpi div .n{font-size:22px;font-weight:700} .kpi div .l{color:var(--mut);font-size:13px}
+  .callout{border-left:3px solid var(--blue);padding:12px 16px;background:#11161f;border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--amber);background:#1a160e}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  td.r,th.r{text-align:right}
+  .bar{height:7px;border-radius:4px;background:#2a2f3a;overflow:hidden;min-width:60px}
+  .bar>span{display:block;height:100%;background:var(--blue)}
+  .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .b-buy{background:#0d2818;color:var(--green)} .b-hold{background:#1c2230;color:var(--blue)}
+  .b-trim{background:#2a2310;color:var(--amber)} .b-sell{background:#2a1213;color:var(--red)}
+  .g{border-bottom:1px dotted var(--mut);cursor:help}
+  .pc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .pc h3{margin:0 0 4px;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .pc .bull{color:var(--green)} .pc .bear{color:var(--red)}
+  .pc .do{margin-top:8px;font-size:13px;color:var(--amber)}
+  .pc ul{margin:6px 0 0;padding-left:18px} .pc li{margin:2px 0}
+  .log{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .log .d{color:var(--mut);font-size:13px;min-width:92px}
+  .gl{padding:10px 0;border-bottom:1px solid var(--line)} .gl b{color:var(--blue)}
+  .foot{color:var(--gray);font-size:12px;margin-top:36px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Compound — Portfolio Dashboard</h1>
+  <div class="sub">Demo · generated 2026-06-27 · read-only analysis, not a trade order</div>
+  <div class="demo">⚠ DEMO — fictional ~$10,000 account with random holdings. Not real, not advice. Illustrates the layout only.</div>
+
+  <div class="tabs">
+    <button class="tabbtn on" onclick="show('t-dash',this)">Dashboard</button>
+    <button class="tabbtn" onclick="show('t-pred',this)">Predictions</button>
+    <button class="tabbtn" onclick="show('t-gloss',this)">Glossary</button>
+  </div>
+
+  <div id="t-dash" class="tab on">
+  <div class="kpi card" style="margin-top:16px">
+    <div><div class="n">$10,000</div><div class="l">Total value</div></div>
+    <div><div class="n">7</div><div class="l">Positions</div></div>
+    <div><div class="n">8.3%</div><div class="l">Cash</div></div>
+    <div><div class="n" style="color:var(--amber)">2</div><div class="l">Trim flagged</div></div>
+  </div>
+
+  <h2>What to do</h2>
+  <div class="grid cards">
+    <div class="callout"><strong>Most important action</strong><br>
+      <span class="g" title="Sell part of a holding, not all of it.">Trim</span> <b>NVDA</b>: sell ~2 of 7 shares (~$380) to bring it from 13% toward 9%. It's run hot and sits in an already tech-heavy book.</div>
+    <div class="callout warn"><strong>Biggest risk</strong><br>
+      <span class="g" title="How much of your money sits in one bet or theme.">Concentration</span>: ~61% of the book is big-tech (AAPL, MSFT, NVDA, TSLA). A tech selloff hits most of it at once.</div>
+  </div>
+
+  <h2>Suggested moves (specific amounts)</h2>
+  <div class="card"><table>
+    <thead><tr><th>Action</th><th>Ticker</th><th class="r">Now</th><th class="r">Sell</th><th class="r">Frees</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-trim">TRIM</span></td><td><a href="https://finance.yahoo.com/quote/NVDA" target="_blank">NVDA</a></td><td class="r">7 sh</td><td class="r">~2 sh</td><td class="r">~$380</td><td>13% → 9%</td></tr>
+      <tr><td><span class="badge b-trim">TRIM</span></td><td><a href="https://finance.yahoo.com/quote/TSLA" target="_blank">TSLA</a></td><td class="r">3 sh</td><td class="r">~1 sh</td><td class="r">~$340</td><td>10% → 7%</td></tr>
+      <tr><td colspan="4" style="text-align:right"><b>Total dry powder freed</b></td><td class="r"><b>~$720</b></td><td>→ Predictions tab</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Holdings</h2>
+  <div class="card"><table>
+    <thead><tr><th>Ticker</th><th>Name</th><th class="r">Weight</th><th style="width:110px">&nbsp;</th><th class="r">Value</th><th>Call</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://finance.yahoo.com/quote/AAPL" target="_blank"><b>AAPL</b></a></td><td>Apple</td><td class="r">22.7%</td><td><div class="bar"><span style="width:100%"></span></div></td><td class="r">$2,270</td><td><span class="badge b-hold">HOLD</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/MSFT" target="_blank"><b>MSFT</b></a></td><td>Microsoft</td><td class="r">15.0%</td><td><div class="bar"><span style="width:66%"></span></div></td><td class="r">$1,500</td><td><span class="badge b-hold">HOLD</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/VOO" target="_blank"><b>VOO</b></a></td><td>S&amp;P 500 <span class="g" title="A basket of many stocks bought as one ticker.">ETF</span></td><td class="r">13.4%</td><td><div class="bar"><span style="width:59%"></span></div></td><td class="r">$1,340</td><td><span class="badge b-hold">HOLD</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/NVDA" target="_blank"><b>NVDA</b></a></td><td>Nvidia</td><td class="r">13.3%</td><td><div class="bar"><span style="width:59%"></span></div></td><td class="r">$1,330</td><td><span class="badge b-trim">TRIM</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/TSLA" target="_blank"><b>TSLA</b></a></td><td>Tesla</td><td class="r">10.2%</td><td><div class="bar"><span style="width:45%"></span></div></td><td class="r">$1,020</td><td><span class="badge b-trim">TRIM</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/O" target="_blank"><b>O</b></a></td><td>Realty Income (REIT)</td><td class="r">8.7%</td><td><div class="bar"><span style="width:38%"></span></div></td><td class="r">$870</td><td><span class="badge b-hold">HOLD</span></td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/KO" target="_blank"><b>KO</b></a></td><td>Coca-Cola</td><td class="r">8.4%</td><td><div class="bar"><span style="width:37%"></span></div></td><td class="r">$840</td><td><span class="badge b-buy">ADD?</span></td></tr>
+    </tbody>
+  </table>
+  <div class="sub" style="padding-top:8px">Tap a ticker for its Yahoo Finance page. Hover dotted words for definitions, or see the Glossary tab.</div></div>
+
+  <h2>Daily suggestions</h2>
+  <div class="card">
+    <div class="log"><div class="d">2026-06-27</div><div>NVDA +2.1% today, now 13% of book. Headline action unchanged: <b>trim NVDA &amp; TSLA</b> to cut tech concentration; park ~$720 in diversifiers (Predictions tab).</div></div>
+    <div class="log"><div class="d">2026-06-26</div><div>Quiet day. No calls changed. Cash 8.3%.</div></div>
+  </div>
+  </div>
+
+  <div id="t-pred" class="tab">
+  <h2>Predictions &amp; ideas</h2>
+  <div class="callout" style="margin-bottom:14px">This demo book is ~61% big-tech with 8% cash. Put the <b>~$720</b> the trims free into <b>Diversify</b> ideas to cut that. <b>Deepen</b> is a quality swap, not new money.</div>
+  <h2>Diversify — spend the freed ~$720 here</h2>
+  <div class="card"><table>
+    <thead><tr><th>Idea</th><th>What it is</th><th>Why it fits</th><th class="r">Suggested</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://finance.yahoo.com/quote/SCHD" target="_blank"><b>SCHD</b></a></td><td>US dividend-stock <span class="g" title="A basket of many stocks in one ticker.">ETF</span></td><td>Value/dividend tilt to balance a growth-heavy book</td><td class="r">~$300</td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/SGOV" target="_blank"><b>SGOV</b></a></td><td>0–3mo Treasury ETF — cash that pays ~3.5%</td><td>Real yield on dry powder vs idle cash</td><td class="r">~$250</td></tr>
+      <tr><td><a href="https://finance.yahoo.com/quote/VXUS" target="_blank"><b>VXUS</b></a></td><td>International stocks ex-US <span class="g" title="A basket of many stocks in one ticker.">ETF</span></td><td>Geographic spread — your book is 100% US</td><td class="r">~$170</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Deepen — quality swap, not new money</h2>
+  <div class="card"><table>
+    <thead><tr><th>Idea</th><th>What it is</th><th>Why it beats single names</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://finance.yahoo.com/quote/QQQM" target="_blank"><b>QQQM</b></a></td><td>Nasdaq-100 <span class="g" title="A basket of the 100 largest non-financial Nasdaq companies.">ETF</span></td><td>If you want tech exposure, a basket spreads it across 100 names instead of betting the book on NVDA + TSLA</td></tr>
+    </tbody>
+  </table></div>
+  <div class="sub" style="margin-top:14px"><b>How to read this:</b> Diversify fixes the concentration risk flagged on the Dashboard. Deepen is optional, only as a quality swap. Illustrative ideas, not advice.</div>
+  </div>
+
+  <div id="t-gloss" class="tab">
+  <h2>Plain-English glossary</h2>
+  <div class="card">
+    <div class="gl"><b>Moat</b> — a durable advantage that keeps competitors from stealing a company's profits (brand, scale, network, switching costs).</div>
+    <div class="gl"><b>ETF</b> — Exchange-Traded Fund: a basket of many stocks (or bonds) bought as one ticker. One trade = instant diversification.</div>
+    <div class="gl"><b>P/E (price-to-earnings)</b> — stock price ÷ yearly profit per share. Higher = more expensive / more growth priced in.</div>
+    <div class="gl"><b>Dividend yield</b> — yearly cash dividend as a % of price.</div>
+    <div class="gl"><b>REIT</b> — Real Estate Investment Trust: a company that owns income property and pays most of its profit out as dividends.</div>
+    <div class="gl"><b>Concentration</b> — how much of your money is in one stock or theme. High = big reward if right, big loss if wrong.</div>
+    <div class="gl"><b>Correlation</b> — how much holdings move together. Your tech names tend to rise and fall as a group.</div>
+    <div class="gl"><b>Dry powder</b> — cash kept ready to buy opportunities or cushion a drop.</div>
+    <div class="gl"><b>Trim vs sell</b> — trim = sell part of a position; sell = exit it entirely.</div>
+    <div class="gl"><b>Position sizing</b> — how big each holding is relative to the whole. Often higher-impact than which stock you pick.</div>
+  </div>
+  </div>
+
+  <div class="foot">
+    DEMO data — fictional account, illustrative only. <b>Not investment advice.</b> Compound is a research tool; you decide and execute. No brokerage is connected and no trade is placed.
+  </div>
+
+</div>
+<script>
+  function show(id,btn){
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+    document.getElementById(id).classList.add('on');
+    document.querySelectorAll('.tabbtn').forEach(function(b){b.classList.remove('on')});
+    btn.classList.add('on');
+  }
+</script>
+</body>
+</html>

@@ -11,6 +11,27 @@ don't toggle skills, you run one command.
 
 ---
 
+## Modes
+
+- **Interactive (default)** — you paste holdings; full pipeline below, with the
+  confirm gate.
+- **`/compound daily`** — unattended refresh. Reads saved holdings from
+  `reports/private/holdings.txt`, **skips the confirm gate**, re-prices every
+  position, regenerates the dashboard, and **prepends one dated entry** to the
+  Daily-suggestions log noting what moved. It does **not** re-run the deep
+  4-master research (that's expensive and nothing changes that fast) — it
+  re-prices, recomputes weights, and re-flags any call that the new prices
+  change (e.g. a TRIM target now hit, a new 52-week extreme, a position that
+  crossed a concentration threshold). Cheap enough to run every morning.
+- **`/compound weekly`** (or just rerun interactively) — the full deep
+  re-research. Do this when you actually want fresh theses, not daily.
+
+For daily/weekly mode the holdings come from `reports/private/holdings.txt` (one
+holding per line, e.g. `MSFT 4` or `AAPL 10 @ 180`; `cash 500`).
+If that file is missing, say so and fall back to asking for a paste.
+
+---
+
 ## Input — how to give me your portfolio
 
 Any of these works. No login, no credentials, no API.
@@ -149,6 +170,58 @@ Save to **`reports/private/portfolio-latest.md`** (gitignored — real holdings
 never get committed; append the dated review + any rebalance notes over time).
 The tracked `reports/portfolio-latest.md` is a sample only — never write real
 holdings there.
+
+---
+
+## Step 6 — Generate the dashboard (the thing you actually look at)
+
+Also write a **self-contained HTML dashboard** to
+**`reports/private/dashboard.html`** (gitignored). One file, inline CSS + tiny
+vanilla JS only (no server, no external dependencies, no frameworks) — it must
+open by double-click and work offline. Three tabs:
+
+**Tab 1 — Dashboard**
+- KPI strip (total value, position count, cash %, cash freed if you act)
+- "Most important action" + "Biggest risk" callouts
+- A **"Suggested moves" table with CONCRETE amounts** — never just a target
+  percentage. For every trim/sell, compute and show **shares to sell and the
+  dollar amount**, plus the resulting weight (e.g. "NVDA: sell ~2 of 7 sh
+  (~$380) → 13% → 9%"). Sum the total dry powder freed.
+- Holdings table with weight bars and color-coded call badges
+  (BUY/ADD green, HOLD blue, TRIM amber, SELL red)
+- **Every ticker is a clickable link** to its Yahoo Finance quote page
+  (`https://finance.yahoo.com/quote/{TICKER}`; crypto uses `{TICKER}-USD`).
+- A few per-position cards (bull/bear one-liners + a concrete "Do:" line)
+- A **"Daily suggestions"** log: a dated list. On each run, **prepend today's
+  entry** (date + what changed + the day's call) above the prior entries —
+  don't overwrite the log. This is what turns a one-shot report into a running
+  advisor.
+
+**Tab 2 — Predictions** — idea generation sized to available cash:
+- State the user's concentrations and current cash.
+- **Diversify** list: low-correlation ideas (broad-market ETF, short-Treasury
+  ETF like SGOV for real cash yield, gold) that reduce the flagged
+  concentration risk — each sized as a $ split of the freed cash.
+- **Deepen** list: for themes the user already holds, suggest the *basket* (an
+  industry ETF) over a single name to cut single-stock blow-up risk — and
+  explicitly say "skip / already covered" where adding would worsen
+  concentration.
+- Tickers link to Yahoo Finance. Mark amounts as illustrative, not advice.
+
+**Tab 3 — Glossary** — plain-English, one line each, for every piece of jargon
+that appears anywhere in the report (moat, ADR, de-listing, ETF, P/E, P/B, FCF
+yield, dividend yield, NIM, ISR, value vs momentum, concentration, correlation,
+dry powder, trim vs sell, position sizing). Also add `title="..."` hover
+tooltips on jargon used inline in the other tabs (dotted underline) so the
+reader never has to leave the page to understand a term. **Assume the reader is
+new to investing** — define before you use.
+
+End every tab's content with the same disclosures as the markdown report.
+
+Because real holdings live in it, the dashboard stays in `reports/private/`
+(gitignored). Open it locally; do not push it to a public host. For a "daily
+suggestions" cadence, schedule `/compound` to re-run (e.g. via the `schedule`
+or `loop` skill, or cron) — each run refreshes the page and grows the log.
 
 ---
 
