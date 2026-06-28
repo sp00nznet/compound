@@ -41,11 +41,20 @@ Any of these works. No login, no credentials, no API.
 | Pasted list | `AAPL 50, NVDA 20, RKLB 300, $4000 cash` |
 | With cost basis | `AAPL 50 @ $180, NVDA 20 @ $700` |
 | Weights only | `AAPL 30%, NVDA 25%, cash 15%` |
-| Robinhood export | Point me at the CSV/statement you exported (Robinhood → Account → Statements & History → export). I'll `Read` it. |
+| Broker export (CSV / XLSX) | Point me at a file exported from Robinhood, Fidelity, Schwab, Vanguard, E*TRADE, Empower, etc. |
 
-If a Robinhood export CSV is given, parse the holdings rows (symbol, quantity,
-and cost basis / market value columns vary by export — read the header and map
-them). Ignore option legs and pending orders unless asked.
+**Broker file import.** Most money apps export CSV or XLSX. Normalize any of them
+with the bundled tool (stdlib only, no install):
+
+```
+python tools/import_holdings.py <path-to-export> --out reports/private/holdings.txt
+```
+
+It sniffs the header for symbol / quantity / cost columns (layouts differ per
+broker), converts a total cost basis to per-share when needed, and emits the
+holdings format below. For an old `.xls` (binary) export, ask the user to
+re-save as CSV or XLSX. Ignore option legs and pending orders unless asked.
+After import, **always show the parsed table and confirm** before researching.
 
 ---
 

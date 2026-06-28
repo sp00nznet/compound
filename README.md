@@ -64,7 +64,15 @@ You:  AAPL 10, MSFT 4, VOO 2, $500 cash
   5. Writes a markdown report AND a self-contained HTML dashboard you open in a browser
 ```
 
-No login. No credentials. No API keys. You paste a list or drop a CSV; that's the whole setup.
+No login. No credentials. No API keys. You paste a list or drop an export; that's the whole setup.
+
+**Coming from another app?** Most money-management apps (Robinhood, Fidelity, Schwab,
+Vanguard, E*TRADE, Empower, …) export **CSV or XLSX**. Compound imports them — it sniffs
+the header for the symbol / quantity / cost columns rather than assuming one layout:
+
+```bash
+python tools/import_holdings.py your-export.csv     # or .xlsx
+```
 
 ## Quickstart
 
@@ -133,6 +141,21 @@ for deeper single-name work.
 Your real holdings, reports, and dashboard live under `reports/private/` and daily logs
 under `logs/*.log` — **all gitignored**. They never get committed or pushed. The only
 portfolio data in this repo is fictional demo/sample data.
+
+## About the original's track record
+
+The upstream project, **[AI Berkshire](https://github.com/xbtlin/ai-berkshire)**,
+documents a real-money track record from its author — reported returns of roughly
+**+69% (2024)** and **+66% (2025 YTD)**, ahead of major indices over those periods
+(see the upstream README for the figures and screenshots).
+
+**Read that carefully:** those results belong to the **original author**, using their
+own judgment, holdings, market, and timing — **not to this fork, and not to you.**
+Compound is a reorganized fork; its inputs, output, and your decisions will differ.
+Past performance is not indicative of future results, the numbers are self-reported
+and unaudited, and **nothing here is a promise, projection, or guarantee of any
+return.** A tool cannot make you money; it can only organize information you still
+have to judge.
 
 ## Disclaimer (the important part, again)
 

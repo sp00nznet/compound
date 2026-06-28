@@ -1,113 +1,60 @@
-# Compound — Project Instructions
+# Compound — project instructions
 
-## Project Overview
+## Overview
 
-A collection of value-investing research Skills built on Claude Code. Four-master framework: Buffett, Munger, Duan Yongping, Li Lu.
-GitHub: xbtlin/ai-berkshire
+Compound is a Claude Code tool for value-investing portfolio research. The single
+entry point is **`/compound`** (`skills/compound.md`): it takes a user's holdings
+(pasted, or a broker CSV/XLSX export), runs them through the four-master framework
+(Buffett, Munger, Duan Yongping, Li Lu), and produces a markdown report plus a
+self-contained HTML dashboard. It is **read-only and never places trades**.
 
-The project is now centered on a single tool, `/compound` — a one-command portfolio research tool that takes pasted holdings or a brokerage CSV export and runs screen → 4-master research → portfolio analysis. It is read-only and never trades. The skills below remain available, but `/compound` is the primary single entry point.
+Fork of [AI Berkshire](https://github.com/xbtlin/ai-berkshire) by xbtlin.
 
-## Project Structure
-
-```
-skills/          — Research Skill definitions (.md), copied to ~/.claude/commands/ for use
-tools/           — Helper tools (financial_rigor.py for exact calculation)
-reports/         — Investment research report output
-assets/          — Static assets such as images
-```
-
-## Report Directory Structure
-
-All reports are organized into folders by **company name**; every report related to a company goes in its corresponding folder:
+## Structure
 
 ```
-reports/
-├── AI产业研究/              — AI industry-chain panorama research (pinned)
-│   ├── AI五层蛋糕-产业全景研究-20260605.md
-│   └── AI五层蛋糕-公众号-20260605.md
-├── 腾讯/                    — All Tencent research reports
-│   ├── 腾讯-research-20260408.md
-│   ├── 腾讯-earnings-2025Q4.md
-│   ├── 腾讯-management-20260409.md
-│   └── 腾讯-thesis.md
-├── 拼多多/                  — All Pinduoduo research reports
-├── 泡泡玛特/                — All Pop Mart research reports
-├── 核电-industry-20260409.md — Industry reports go in the root directory
-├── AI算力-funnel-20260509.md  — Funnel screening reports go in the root directory
-├── AI-轮动判断-20260509.md    — Theme-level synthesis judgment reports go in the root directory
-├── portfolio-latest.md       — Portfolio reports go in the root directory
-└── 多公司对比-checklist-20260408.md — Multi-company reports go in the root directory
+skills/      — Skill definitions (.md). /compound is primary; the rest are
+               internal stages / deeper single-name tools. Copy to ~/.claude/commands/.
+tools/       — Python helpers, stdlib-only: financial_rigor.py (exact math),
+               import_holdings.py (broker CSV/XLSX → holdings format), report_audit.py
+scripts/     — install-claude-commands.sh, daily.{ps1,sh} (unattended refresh)
+assets/      — demo dashboard + screenshots
+reports/     — sample output; reports/private/ holds real holdings (GITIGNORED)
 ```
 
-## Report Naming Conventions
+## Privacy (hard rule)
 
-| Skill | File naming format | Example |
-|------|---------|------|
-| /investment-team | `{company}/` directory containing 4 perspectives + final report | `reports/拼多多/最终报告.md` |
-| /investment-research | `{company}-research-{YYYYMMDD}.md` | `reports/腾讯/腾讯-research-20260408.md` |
-| /investment-checklist | `{company}-checklist-{YYYYMMDD}.md` | `reports/腾讯/腾讯-checklist-20260408.md` |
-| /industry-research | `{industry}-industry-{YYYYMMDD}.md` (root directory) | `reports/核电-industry-20260409.md` |
-| /industry-funnel | `{industry}-funnel-{YYYYMMDD}.md` (root directory) | `reports/AI算力-funnel-20260509.md` |
-| /private-company-research | `{company}-private-{YYYYMMDD}.md` | `reports/字节跳动/字节跳动-private-20260408.md` |
-| /earnings-review | `{company}-earnings-{period}.md` | `reports/腾讯/腾讯-earnings-2025Q4.md` |
-| /earnings-team | `{company}/` directory containing 4 master perspectives + research draft + article + reader review | `reports/腾讯/腾讯-earnings-2025Q4.md` (final article) |
-| /thesis-tracker | `{company}-thesis.md` (maintained long-term) | `reports/腾讯/腾讯-thesis.md` |
-| /portfolio-review | `portfolio-latest.md` (root directory, continuously updated) | `reports/portfolio-latest.md` |
-| /management-deep-dive | `{company}-management-{YYYYMMDD}.md` | `reports/腾讯/腾讯-management-20260409.md` |
+Real holdings, dashboards, and daily logs live under `reports/private/` and
+`logs/*.log` — both gitignored. **Never commit real holdings, account data, share
+counts, cost bases, or personal identifiers.** Use fictional data in any committed
+example, sample, or screenshot. When in doubt, put it in `reports/private/`.
 
-## /investment-team File Structure
+## Research principles (highest priority)
 
-```
-reports/{company}/
-├── README.md                         — Research framework overview + core conclusions
-├── 01-商业模式分析-段永平视角.md       — Business model analysis (Duan Yongping's perspective)
-├── 02-财务估值分析-巴菲特视角.md       — Financial & valuation analysis (Buffett's perspective)
-├── 03-行业竞争分析-芒格视角.md         — Industry & competition analysis (Munger's perspective)
-├── 04-风险管理层评估-李录视角.md       — Risk & management assessment (Li Lu's perspective)
-└── 最终报告.md                       — Team Lead synthesis report
-```
+- **Objective.** Every claim backed by data + source. No "I think" / "obviously" —
+  use "the data shows" / "evidence indicates".
+- **No preset stance.** Data first, logic second, conclusion last. The conclusion
+  must follow from the data.
+- **Both sides.** Every core judgment carries its counter-case.
+- **Honest about uncertainty.** Say "insufficient data" rather than filling a
+  framework with speculation.
+- **Cross-check.** Key numbers need two independent sources; recompute market cap
+  (price × shares) and compare to the reported figure. Use
+  `tools/financial_rigor.py` for PE/ROE/valuation — never mental-math.
+- **Currency explicit** on every figure (USD / HKD / CNY).
+- **Not investment advice.** Output is analysis for the user to act on themselves.
+  Flag holdings a value framework can't assess (crypto, baskets, momentum) rather
+  than forcing a verdict.
 
-## Core Principles of Research Analysis (highest priority)
+## Output
 
-- **Objective, objective, objective** — all research analysis must be based on facts and data; subjective conjecture is strictly forbidden
-- Strictly distinguish "facts" from "opinions": facts must be backed by data; opinions must be explicitly labeled as "opinion" or "speculation"
-- **No preset stance**: do not assume bullish or bearish in advance. Lay out the data first, then reason through the logic, then reach a conclusion. Conclusions must follow naturally from the data
-- Avoid subjective phrasing such as "I think", "I feel", or "obviously"; use "the data shows", "the evidence indicates", or "according to source XX" instead
-- **Present both sides**: every core judgment must be accompanied by counter-evidence ("but on the other hand...") so the reader can weigh it themselves
-- Be honest and say "uncertain" or "insufficient data" when things are unclear; do not fill in certainty with speculation
-- Every skill (investment-team, investment-research, earnings-review, etc.) must follow the above principles during execution
+- All reports and the dashboard are in **English**.
+- Style: direct, sharp, no filler. ★ ratings (★1–5, no half stars).
+- The dashboard must be a single self-contained HTML file (inline CSS + tiny JS,
+  no external deps) that opens by double-click — see `skills/compound.md` Step 6.
 
-## Report Language and Style
+## Git
 
-- All reports are written in **English**
-- Style: direct, sharp, no filler
-- Data must be cited with sources; key figures must be cross-verified against at least 2 sources
-- Estimated values must be marked as "estimate"
-- Use ★ symbols for ratings (★1–5), no half stars
-- Weave in commentary quotes from Buffett / Munger / Duan Yongping / Li Lu
-
-## GitHub Operations
-
-- Local clone path: `~/compound/`
-- Remote repository: `https://github.com/xbtlin/ai-berkshire.git`
-- Before pushing, run `git pull --rebase origin main` first (the remote often has new commits)
-- Write commit messages in English, clearly describing what changed
-- Do not push intermediate process files (such as data_collection.md); push only the final reports
-
-## Common Commands
-
-```bash
-# Push reports to GitHub
-cd ~/compound
-git add reports/xxx.md
-git commit -m "Add xxx report"
-git pull --rebase origin main
-git push origin main
-```
-
-## Notes
-
-- Market cap must be verified by hand: share price × total shares outstanding, compared against the reported market cap
-- Currency units must be explicit (HKD / RMB / USD) to avoid confusion
-- Compute metrics such as PE/ROE precisely with tools/financial_rigor.py
-- After finishing a report, proactively ask whether to push it to GitHub
+- Local clone path: `~/compound/`. Commit messages in English.
+- Before pushing real reports, re-run the privacy check: no real holdings, numbers,
+  or identifiers in tracked files (`git grep --cached` the distinctive ones).

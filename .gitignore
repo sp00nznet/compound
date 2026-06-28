@@ -11,3 +11,7 @@ reports/private/
 
 # Daily run logs may contain holdings/analysis — keep local
 logs/*.log
+
+# Python caches
+__pycache__/
+*.pyc
