@@ -220,9 +220,16 @@ open by double-click and work offline. Three tabs:
   each as an **expandable research card** (`<details>`) whose body has:
   **Thesis · key data line · 🟢 Bull · 🔴 Bear/risks · Fit to your book · Call.**
   Don't just list a ticker and a one-liner — a suggestion needs its "why".
-- Each card has a **"⬇ Download full report"** link that builds the card's report
-  as a Markdown file client-side (a `Blob` + temporary `<a download>` — no server,
-  keeps the dashboard self-contained) named `compound-{TICKER}-research.md`.
+- **Write a full standalone research report** per candidate to
+  `reports/private/research/{TICKER}.md` (gitignored) — a proper multi-section
+  deep-dive (Snapshot, What it is/holds, Performance & risk, Costs & taxes, Bull,
+  Bear/risks, Role in this portfolio, Alternatives & how to choose, Verdict).
+  For a single company, make it a full equity note (business, financials,
+  valuation, moat, management, scenarios). The card body is the *summary*; this
+  file is the *full report*.
+- Each card's **"⬇ Download full report"** link points at that file:
+  `<a class="dl" href="research/{TICKER}.md" download>`. (Real downloadable
+  reports, like the report archive — not a re-dump of the card text.)
 - Tickers link to Yahoo Finance. Mark amounts/ideas as illustrative, not advice.
 
 **Tab 3 — Glossary** — plain-English, one line each, for every piece of jargon
