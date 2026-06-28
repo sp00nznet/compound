@@ -109,25 +109,66 @@
   </div>
 
   <div id="t-pred" class="tab">
-  <h2>Predictions &amp; ideas</h2>
-  <div class="callout" style="margin-bottom:14px">This demo book is ~61% big-tech with 8% cash. Put the <b>~$720</b> the trims free into <b>Diversify</b> ideas to cut that. <b>Deepen</b> is a quality swap, not new money.</div>
+  <style>
+    #t-pred details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:10px}
+    #t-pred summary{cursor:pointer;font-size:15px;line-height:1.7}
+    #t-pred summary::marker{color:var(--mut)}
+    #t-pred details p{margin:8px 0} #t-pred details .lbl{color:var(--mut);font-weight:700}
+    #t-pred details .data{font-size:13px;color:var(--mut);background:#11161f;border-radius:8px;padding:8px 10px;margin:8px 0}
+    #t-pred .dl{display:inline-block;margin-top:6px;font-size:13px;color:var(--blue);cursor:pointer;user-select:none}
+  </style>
+  <h2>Predictions &amp; ideas <span class="sub" style="text-transform:none;letter-spacing:0">— click any name to expand the research</span></h2>
+  <div class="callout" style="margin-bottom:14px">This demo book is ~61% big-tech with 8% cash. Put the <b>~$720</b> the trims free into <b>Diversify</b> ideas to cut that. <b>Deepen</b> is a quality swap, not new money. Each idea has a full write-up — expand it before acting.</div>
+
   <h2>Diversify — spend the freed ~$720 here</h2>
-  <div class="card"><table>
-    <thead><tr><th>Idea</th><th>What it is</th><th>Why it fits</th><th class="r">Suggested</th></tr></thead>
-    <tbody>
-      <tr><td><a href="https://finance.yahoo.com/quote/SCHD" target="_blank"><b>SCHD</b></a></td><td>US dividend-stock <span class="g" title="A basket of many stocks in one ticker.">ETF</span></td><td>Value/dividend tilt to balance a growth-heavy book</td><td class="r">~$300</td></tr>
-      <tr><td><a href="https://finance.yahoo.com/quote/SGOV" target="_blank"><b>SGOV</b></a></td><td>0–3mo Treasury ETF — cash that pays ~3.5%</td><td>Real yield on dry powder vs idle cash</td><td class="r">~$250</td></tr>
-      <tr><td><a href="https://finance.yahoo.com/quote/VXUS" target="_blank"><b>VXUS</b></a></td><td>International stocks ex-US <span class="g" title="A basket of many stocks in one ticker.">ETF</span></td><td>Geographic spread — your book is 100% US</td><td class="r">~$170</td></tr>
-    </tbody>
-  </table></div>
+
+  <details open>
+    <summary><a href="https://finance.yahoo.com/quote/SCHD" target="_blank"><b>SCHD</b></a> — US dividend-stock <span class="g" title="A basket of many stocks in one ticker.">ETF</span> · <span class="badge b-buy">BUY ~$300</span></summary>
+    <p><span class="lbl">Thesis.</span> ~100 high-quality US dividend payers in one low-cost ticker — a value/dividend tilt to balance a book that's all growth.</p>
+    <div class="data">Low expense ratio · ~3–4% dividend yield · screens for dividend consistency + financial strength · tilts to staples, health care, industrials.</div>
+    <p>🟢 <span class="lbl">Bull:</span> diversifies away from mega-cap tech; pays you while you wait; tends to hold up better in selloffs.</p>
+    <p>🔴 <span class="lbl">Bear / risks:</span> lags in tech-led bull markets; rate-sensitive; not a growth engine.</p>
+    <p><span class="lbl">Fit:</span> your demo book is ~61% big-tech — SCHD is the cleanest counterweight.</p>
+    <p style="color:var(--green)"><span class="lbl" style="color:var(--green)">Call:</span> core diversifier, ~$300.</p>
+    <a class="dl" onclick="dl(this);return false">⬇ Download full report</a>
+  </details>
+
+  <details>
+    <summary><a href="https://finance.yahoo.com/quote/SGOV" target="_blank"><b>SGOV</b></a> — 0–3mo Treasury <span class="g" title="A basket of very short-term government bonds — about as safe as cash.">ETF</span>, cash sleeve · <span class="badge b-buy">BUY ~$250</span></summary>
+    <p><span class="lbl">Thesis.</span> Ultra-short Treasury bills — effectively cash that pays interest, no real price risk.</p>
+    <div class="data">~3.5% yield · low expense · holds T-bills under 3 months · daily liquidity, pays monthly.</div>
+    <p>🟢 <span class="lbl">Bull:</span> real yield on idle cash; about as safe as it gets; deploy any time.</p>
+    <p>🔴 <span class="lbl">Bear / risks:</span> yield falls if the Fed cuts; not growth.</p>
+    <p><span class="lbl">Fit:</span> turns spare cash into earning dry powder.</p>
+    <p style="color:var(--green)"><span class="lbl" style="color:var(--green)">Call:</span> buy ~$250 as the cash sleeve.</p>
+    <a class="dl" onclick="dl(this);return false">⬇ Download full report</a>
+  </details>
+
+  <details>
+    <summary><a href="https://finance.yahoo.com/quote/VXUS" target="_blank"><b>VXUS</b></a> — international stocks ex-US <span class="g" title="A basket of many stocks in one ticker.">ETF</span> · <span class="badge b-buy">BUY ~$170</span></summary>
+    <p><span class="lbl">Thesis.</span> Thousands of developed + emerging-market companies outside the US, in one ticker — geographic diversification.</p>
+    <div class="data">Low expense · broad ex-US coverage · adds currency + region diversity your US-only book lacks.</div>
+    <p>🟢 <span class="lbl">Bull:</span> the only holding here that isn't US-dollar / US-market dependent; valuations often cheaper than the US.</p>
+    <p>🔴 <span class="lbl">Bear / risks:</span> has lagged the US for years; FX risk; includes weaker governance markets.</p>
+    <p><span class="lbl">Fit:</span> your demo book is 100% US — this is the geographic spread.</p>
+    <p style="color:var(--green)"><span class="lbl" style="color:var(--green)">Call:</span> buy ~$170.</p>
+    <a class="dl" onclick="dl(this);return false">⬇ Download full report</a>
+  </details>
+
   <h2>Deepen — quality swap, not new money</h2>
-  <div class="card"><table>
-    <thead><tr><th>Idea</th><th>What it is</th><th>Why it beats single names</th></tr></thead>
-    <tbody>
-      <tr><td><a href="https://finance.yahoo.com/quote/QQQM" target="_blank"><b>QQQM</b></a></td><td>Nasdaq-100 <span class="g" title="A basket of the 100 largest non-financial Nasdaq companies.">ETF</span></td><td>If you want tech exposure, a basket spreads it across 100 names instead of betting the book on NVDA + TSLA</td></tr>
-    </tbody>
-  </table></div>
-  <div class="sub" style="margin-top:14px"><b>How to read this:</b> Diversify fixes the concentration risk flagged on the Dashboard. Deepen is optional, only as a quality swap. Illustrative ideas, not advice.</div>
+
+  <details>
+    <summary><a href="https://finance.yahoo.com/quote/QQQM" target="_blank"><b>QQQM</b></a> — Nasdaq-100 <span class="g" title="A basket of the 100 largest non-financial Nasdaq companies.">ETF</span> · <span class="badge b-trim">SWAP</span></summary>
+    <p><span class="lbl">Thesis.</span> If you want tech exposure, own it through a 100-name basket instead of betting the book on NVDA + TSLA.</p>
+    <div class="data">Low expense · 100 largest non-financial Nasdaq names · still tech-heavy by design.</div>
+    <p>🟢 <span class="lbl">Bull:</span> spreads single-stock blow-up risk; cheap; one trade.</p>
+    <p>🔴 <span class="lbl">Bear / risks:</span> still concentrated in mega-cap tech — overlaps what you already hold; not true diversification.</p>
+    <p><span class="lbl">Fit:</span> a swap for NVDA/TSLA single-name risk, <i>not</i> added tech money.</p>
+    <p style="color:var(--amber)"><span class="lbl" style="color:var(--amber)">Call:</span> swap option only if you keep heavy tech conviction.</p>
+    <a class="dl" onclick="dl(this);return false">⬇ Download full report</a>
+  </details>
+
+  <div class="sub" style="margin-top:14px"><b>How to read this:</b> Diversify fixes the concentration risk flagged on the Dashboard. Deepen is optional, only as a quality swap. Illustrative demo ideas, not advice.</div>
   </div>
 
   <div id="t-gloss" class="tab">
@@ -157,6 +198,20 @@
     document.getElementById(id).classList.add('on');
     document.querySelectorAll('.tabbtn').forEach(function(b){b.classList.remove('on')});
     btn.classList.add('on');
+  }
+  function dl(a){
+    var det=a.closest('details');
+    var tk=(det.querySelector('summary b')||{}).innerText||'report';
+    var sum=det.querySelector('summary').innerText.trim();
+    var clone=det.cloneNode(true);
+    clone.querySelector('summary').remove();
+    var x=clone.querySelector('.dl'); if(x)x.remove();
+    var md='# '+tk+' — Compound research (DEMO)\n\n_'+sum+'_\n\n'+clone.innerText.trim()
+      +'\n\n---\nGenerated by Compound. Demo data, illustrative only. Not investment advice.\n';
+    var u=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
+    var l=document.createElement('a'); l.href=u; l.download='compound-'+tk+'-research.md';
+    document.body.appendChild(l); l.click(); l.remove();
+    setTimeout(function(){URL.revokeObjectURL(u)},2000);
   }
 </script>
 </body>

@@ -206,16 +206,24 @@ open by double-click and work offline. Three tabs:
   don't overwrite the log. This is what turns a one-shot report into a running
   advisor.
 
-**Tab 2 — Predictions** — idea generation sized to available cash:
+**Tab 2 — Predictions** — researched ideas sized to available cash:
 - State the user's concentrations and current cash.
-- **Diversify** list: low-correlation ideas (broad-market ETF, short-Treasury
-  ETF like SGOV for real cash yield, gold) that reduce the flagged
-  concentration risk — each sized as a $ split of the freed cash.
-- **Deepen** list: for themes the user already holds, suggest the *basket* (an
-  industry ETF) over a single name to cut single-stock blow-up risk — and
-  explicitly say "skip / already covered" where adding would worsen
-  concentration.
-- Tickers link to Yahoo Finance. Mark amounts as illustrative, not advice.
+- **Diversify** ideas: low-correlation holdings (broad-market ETF, short-Treasury
+  ETF like SGOV for real cash yield, gold) that reduce the flagged concentration
+  risk — each sized as a $ split of the freed cash.
+- **Deepen** ideas: for themes the user already holds, suggest the *basket* (an
+  industry ETF) or the quality blue-chip over a single micro-cap to cut
+  single-stock blow-up risk — framed as a **swap**, not new money — and say
+  "skip / already covered" where adding would worsen concentration.
+- **Actually research each candidate** (web search for live price, fee/yield,
+  what it holds, recent performance; fundamentals for a single company). Render
+  each as an **expandable research card** (`<details>`) whose body has:
+  **Thesis · key data line · 🟢 Bull · 🔴 Bear/risks · Fit to your book · Call.**
+  Don't just list a ticker and a one-liner — a suggestion needs its "why".
+- Each card has a **"⬇ Download full report"** link that builds the card's report
+  as a Markdown file client-side (a `Blob` + temporary `<a download>` — no server,
+  keeps the dashboard self-contained) named `compound-{TICKER}-research.md`.
+- Tickers link to Yahoo Finance. Mark amounts/ideas as illustrative, not advice.
 
 **Tab 3 — Glossary** — plain-English, one line each, for every piece of jargon
 that appears anywhere in the report (moat, ADR, de-listing, ETF, P/E, P/B, FCF
