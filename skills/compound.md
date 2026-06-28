@@ -1,0 +1,167 @@
+# /compound — One-command portfolio research
+
+Give me your holdings, I give you back a buy / add / hold / trim / sell call on
+every position plus a portfolio-level verdict. Read-only: I never touch your
+brokerage and I never place a trade. The report is the thing you review and act
+on yourself.
+
+This is the single entry point. It orchestrates the underlying frameworks
+(`quality-screen` → `investment-team` → `portfolio-review`) internally — you
+don't toggle skills, you run one command.
+
+---
+
+## Input — how to give me your portfolio
+
+Any of these works. No login, no credentials, no API.
+
+| Form | Example |
+|------|---------|
+| Pasted list | `AAPL 50, NVDA 20, RKLB 300, $4000 cash` |
+| With cost basis | `AAPL 50 @ $180, NVDA 20 @ $700` |
+| Weights only | `AAPL 30%, NVDA 25%, cash 15%` |
+| Robinhood export | Point me at the CSV/statement you exported (Robinhood → Account → Statements & History → export). I'll `Read` it. |
+
+If a Robinhood export CSV is given, parse the holdings rows (symbol, quantity,
+and cost basis / market value columns vary by export — read the header and map
+them). Ignore option legs and pending orders unless asked.
+
+---
+
+## Step 1 — Parse and CONFIRM (the gate)
+
+Build the holdings table and **show it to the user before doing any research.**
+This is the confirmation layer — nothing runs until they say go.
+
+| Ticker | Name | Shares | Cost | Price | Mkt Value | Weight |
+|--------|------|--------|------|-------|-----------|--------|
+
+- Fetch current price per ticker (WebSearch / a quote source). Cash is a position.
+- Compute weights from market value. Verify the total.
+- Ask: **"This is what I'll research — correct? Anything to add to a watchlist?"**
+- Accept watchlist tickers (names you don't own but are considering) — they get
+  the same research so you can compare against what you hold.
+
+Do not proceed past this step without confirmation.
+
+---
+
+## Step 1.5 — Triage & right-size (do this before researching)
+
+Two judgments that keep the run proportionate and honest:
+
+**Classify each holding:**
+- **Analyzable business** → full pipeline below (AAPL, banks, miners, etc.).
+- **Not a single business** → ETF / index / copy-trade basket. Don't run moat/DCF on
+  it; describe what it actually holds and what role it plays in the book.
+- **Unvaluable** → crypto, meme coins. No cash flows, no moat — say so plainly,
+  give a one-line risk note, do not force a value verdict.
+- **Pure momentum / distressed penny** → flag it as not-a-value-holding and assess
+  the trade (size, exit), not the "investment".
+
+**Right-size depth to account size and position weight.** Firing four master-agents
+on every name is often absurd (a 10-name, $300 account does not need 40 agents):
+- Large/core positions of a meaningfully-sized account → full four-master team.
+- Small account, or positions <3–5% → one combined-analyst pass per name.
+- Always state in the report which depth you used and why.
+
+## Step 2 — De-risk screen (fast)
+
+Run the `quality-screen` 7-indicator test on every holding to flag anything that
+fails the floor for a first-rate business (10y avg ROE <8%, negative 5y FCF,
+interest coverage <2x, gross margin <15%, OCF/NI <0.7, net margin <5%, >20%
+share dilution). Apply the three exemptions (strategic-investment phase,
+deliberate-low-margin, high-turnover-thin-margin) before flagging.
+
+Output a one-row-per-holding pass/fail strip. A failed screen doesn't auto-sell
+— it raises the bar for the deeper research in Step 3.
+
+---
+
+## Step 3 — Deep research, per position (parallel)
+
+For each holding **and** each watchlist ticker, run the four-master team in
+parallel background agents (this is `investment-team`). Launch all agents for a
+given company in one message.
+
+| Agent | Lens | Master |
+|-------|------|--------|
+| business-analyst | business model & moat | Duan Yongping |
+| financial-analyst | financials & valuation | Buffett |
+| industry-researcher | industry & competition | Munger |
+| risk-assessor | risk & management | Li Lu |
+
+Each agent must:
+- Use WebSearch for the latest public info (filings, earnings, news).
+- **Pull every key financial number from two independent sources** per
+  `financial-data.md` (US: macrotrends + stockanalysis; HK: aastocks +
+  macrotrends; A-share: eastmoney + cninfo). Flag any >1% discrepancy.
+- **Never mental-math valuation.** Use the Bash tool to call:
+  - `python tools/financial_rigor.py verify-market-cap --price P --shares S --reported R --currency USD`
+  - `python tools/financial_rigor.py verify-valuation --price P --eps E --bvps B`
+  - `python tools/financial_rigor.py three-scenario --price P --eps E --shares S --growth opt neu pes --pe optPE neuPE pesPE`
+  - Embed the tool output in the analysis as the verification record.
+- Return a scored writeup with a clear conclusion, bull AND bear case, and sources.
+
+To keep it tractable on a large portfolio: research positions in descending
+weight order; for very small positions (<3% and passed the screen) a single
+combined analyst pass is fine instead of the full four-agent team — say so in
+the report when you do this.
+
+---
+
+## Step 4 — Portfolio-level analysis
+
+This is `portfolio-review`. After per-position research:
+
+- **Concentration**: top position <40%, top-3 50–80%, 5–15 names, cash 10–30%.
+- **Correlation**: surface hidden overlap (same theme/country/supply chain) and
+  what a single macro shock does to the whole book.
+- **Opportunity cost**: rank every position by expected annual return × certainty
+  (`FCF yield + growth` as the base estimate, cross-checked with
+  `three-scenario`). The key question: is the lowest-ranked position beating cash
+  (~4% risk-free)? If not, it's a sell candidate.
+- **Stress test**: recession, rate spike, sector PE compression, geopolitical —
+  qualitative + rough magnitude per scenario.
+
+---
+
+## Step 5 — The report (the only output that matters)
+
+Write one report. Per position **and** portfolio-level. Structure:
+
+```
+1. One-line portfolio verdict
+2. Holdings table with a Call column: BUY MORE / HOLD / TRIM / SELL / NEW
+3. Per-position cards — each: thesis still intact? valuation, bull, bear,
+   the call, and a target price band
+4. Portfolio analysis — concentration, correlation, opportunity cost, stress test
+5. The single most important action right now (one sentence)
+6. Biggest current risk (one sentence)
+7. Add-signals / trim-signals to watch per position
+```
+
+End with the standard disclosures: **information-richness rating (A/B/C)** per
+name, an **AI research-limitations note**, and the reminder that this is
+analysis, not a trade order — the user decides and executes.
+
+Save to **`reports/private/portfolio-latest.md`** (gitignored — real holdings
+never get committed; append the dated review + any rebalance notes over time).
+The tracked `reports/portfolio-latest.md` is a sample only — never write real
+holdings there.
+
+---
+
+## Hard rules (inherited from CLAUDE.md — non-negotiable)
+
+- **Objective, objective, objective.** Every claim backed by data + source. No
+  "I think" / "obviously" — use "the data shows" / "evidence indicates".
+- **No preset stance.** Data first, logic second, conclusion last. Show both
+  sides of every judgment ("but on the other hand…").
+- **Honest about uncertainty.** Say "insufficient data" rather than filling a
+  framework with speculation to fake confidence.
+- **Cross-check.** Key numbers need two independent sources; market cap is
+  always recomputed (price × shares) and compared to the reported figure.
+- **Currency is explicit** on every figure (USD / HKD / CNY).
+- **Read-only.** No brokerage connection, no order placement, ever. The report
+  is the deliverable; the human is the executor.
